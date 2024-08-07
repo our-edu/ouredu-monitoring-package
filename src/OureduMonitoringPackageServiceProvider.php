@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace OurEdu\OureduMonitoringPackage;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
+use OurEdu\OureduMonitoringPackage\Commands\OureduMonitoringPackageCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class OureduMonitoringPackageServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +16,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('ouredu-monitoring-package')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_migration_table_name_table')
-            ->hasCommand(SkeletonCommand::class);
+            ->hasMigration('create_ouredu_monitoring_package_table')
+            ->hasCommand(OureduMonitoringPackageCommand::class);
     }
 }
