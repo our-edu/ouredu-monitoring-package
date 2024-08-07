@@ -8,20 +8,21 @@ use Prometheus\RenderTextFormat;
 class PrometheusService
 {
     public CollectorRegistry $collectorRegistry;
+
     private $appName;
 
     public function __construct()
     {
-    \Prometheus\Storage\Redis::setDefaultOptions(
-        [
-            'host' => env("REDIS_HOST"),
-            'port' => env("REDIS_PORT"),
-            'password' => env("REDIS_PASSWORD"),
-        ]
-    );
-    $registry = CollectorRegistry::getDefault();
+        \Prometheus\Storage\Redis::setDefaultOptions(
+            [
+                'host' => env('REDIS_HOST'),
+                'port' => env('REDIS_PORT'),
+                'password' => env('REDIS_PASSWORD'),
+            ]
+        );
+        $registry = CollectorRegistry::getDefault();
         $this->collectorRegistry = $registry;
-        $this->appName = config("app.name") ?? "DefaultApp";
+        $this->appName = config('app.name') ?? 'DefaultApp';
     }
 
     public function registerRequest(
@@ -41,7 +42,7 @@ class PrometheusService
                 'method' => $method,
                 'url' => $url,
                 'status' => $status,
-                'app' => $this->appName
+                'app' => $this->appName,
             ]);
 
         $this->collectorRegistry
@@ -75,7 +76,7 @@ class PrometheusService
                 'app',
                 'jobs_succeeded_total',
                 'Total number of jobs succeeded',
-                ['job','app']
+                ['job', 'app']
             )
             ->incBy(1, ['job' => $jobName, 'app' => $this->appName]);
     }
