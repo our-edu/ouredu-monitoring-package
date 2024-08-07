@@ -1,4 +1,5 @@
 <?php
+
 namespace OurEdu\OureduMonitoringPackage\Middleware;
 
 use Closure;
@@ -29,11 +30,12 @@ class MonitoringMiddleware
         $method = $request->method();
 
         // Normalize the path
-        $path = "/" . trim($path, "/");
+        $path = '/'.trim($path, '/');
 
         $method = $request->method();
 
         $this->promService->registerRequest($method, $path, $status, $duration);
+
         return $response;
     }
 }

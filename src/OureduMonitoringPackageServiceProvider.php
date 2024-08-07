@@ -4,7 +4,6 @@ namespace OurEdu\OureduMonitoringPackage;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use OurEdu\OureduMonitoringPackage\Commands\OureduMonitoringPackageCommand;
 
 class OureduMonitoringPackageServiceProvider extends PackageServiceProvider
 {
@@ -15,6 +14,6 @@ class OureduMonitoringPackageServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
-        $package->name("ouredu-monitoring-package")->hasConfigFile();
+        $package->name('ouredu-monitoring-package')->hasConfigFile();
     }
 }
