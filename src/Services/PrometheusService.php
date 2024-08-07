@@ -8,11 +8,13 @@ use Prometheus\RenderTextFormat;
 class PrometheusService
 {
     public CollectorRegistry $collectorRegistry;
+    private $appName;
 
     public function __construct()
     {
         $registry = CollectorRegistry::getDefault();
         $this->collectorRegistry = $registry;
+        $this->appName = config("app.name") ?? "DefaultApp";
     }
 
     public function registerRequest(
@@ -26,12 +28,13 @@ class PrometheusService
                 'app',
                 'requests_count',
                 'Total number of HTTP requests',
-                ['method', 'url', 'status']
+                ['method', 'url', 'status', 'app']
             )
             ->incBy(1, [
                 'method' => $method,
                 'url' => $url,
                 'status' => $status,
+                'app' => $this->appName
             ]);
 
         $this->collectorRegistry
@@ -39,10 +42,11 @@ class PrometheusService
                 'app',
                 'request_latency_ms',
                 'Request duration in seconds',
-                ['method', 'url'],
+                ['method', 'url', 'app'],
                 [5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000]
             )
-            ->observe($duration, ['method' => $method, 'url' => $url]);
+            ->observe($duration, ['method' => $method, 'url' => $url, 'app' => $this->appName]);
+
     }
 
     public function registerJobStart(string $jobName): void
@@ -52,9 +56,9 @@ class PrometheusService
                 'app',
                 'jobs_started_total',
                 'Total number of jobs started',
-                ['job']
+                ['job', 'app']
             )
-            ->incBy(1, ['job' => $jobName]);
+            ->incBy(1, ['job' => $jobName, 'app' => $this->appName]);
     }
 
     public function registerJobSuccess(string $jobName): void
@@ -64,9 +68,9 @@ class PrometheusService
                 'app',
                 'jobs_succeeded_total',
                 'Total number of jobs succeeded',
-                ['job']
+                ['job','app']
             )
-            ->incBy(1, ['job' => $jobName]);
+            ->incBy(1, ['job' => $jobName, 'app' => $this->appName]);
     }
 
     public function registerJobFailure(string $jobName): void
@@ -76,9 +80,9 @@ class PrometheusService
                 'app',
                 'jobs_failed_total',
                 'Total number of jobs failed',
-                ['job']
+                ['job', 'app']
             )
-            ->incBy(1, ['job' => $jobName]);
+            ->incBy(1, ['job' => $jobName, 'app' => $this->appName]);
     }
 
     public function registerJobLatency(string $jobName, float $latency): void
@@ -88,10 +92,10 @@ class PrometheusService
                 'app',
                 'job_latency_in_ms',
                 'Job latency in milliseconds',
-                ['job'],
+                ['job', 'app'],
                 [5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000]
             )
-            ->observe($latency, ['job' => $jobName]);
+            ->observe($latency, ['job' => $jobName, 'app' => $this->appName]);
     }
 
     public function metrics()
