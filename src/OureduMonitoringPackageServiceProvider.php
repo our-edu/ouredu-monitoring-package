@@ -15,11 +15,6 @@ class OureduMonitoringPackageServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
-        $package
-            ->name('ouredu-monitoring-package')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_ouredu_monitoring_package_table')
-            ->hasCommand(OureduMonitoringPackageCommand::class);
+        $package->name("ouredu-monitoring-package")->hasConfigFile();
     }
 }
