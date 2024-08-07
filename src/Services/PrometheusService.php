@@ -12,7 +12,14 @@ class PrometheusService
 
     public function __construct()
     {
-        $registry = CollectorRegistry::getDefault();
+    \Prometheus\Storage\Redis::setDefaultOptions(
+        [
+            'host' => env("REDIS_HOST"),
+            'port' => env("REDIS_PORT"),
+            'password' => env("REDIS_PASSWORD"),
+        ]
+    );
+    $registry = CollectorRegistry::getDefault();
         $this->collectorRegistry = $registry;
         $this->appName = config("app.name") ?? "DefaultApp";
     }
