@@ -18,24 +18,23 @@ class MonitoringMiddleware
     /**
      * Get the normalized route path.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return string
      */
     protected function getNormalizedRoutePath(Request $request)
     {
         $route = Route::getRoutes()->match($request);
 
-        if (!$route) {
+        if (! $route) {
             return $request->path(); // Fallback to the raw path if no route is matched
         }
 
         $path = $route->uri();
 
         foreach ($route->parameters() as $key => $value) {
-            $path = str_replace($value, ":" . $key, $path);
+            $path = str_replace($value, ':'.$key, $path);
         }
 
-        return "/" . $path;
+        return '/'.$path;
     }
 
     /**
