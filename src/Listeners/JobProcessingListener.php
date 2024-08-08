@@ -1,6 +1,7 @@
 <?php
 
 namespace OurEdu\OureduMonitoringPackage\Listeners;
+
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Redis;
 use OurEdu\OureduMonitoringPackage\Services\PrometheusService;
@@ -17,7 +18,7 @@ class JobProcessingListener
     public function handle(JobProcessing $event)
     {
         $jobBody = json_decode($event->job->getRawBody(), true);
-        Redis::Set("job:started:" . $jobBody["uuid"], microtime(true));
-        $this->prometheusService->registerJobStart($jobBody["displayName"]);
+        Redis::Set('job:started:'.$jobBody['uuid'], microtime(true));
+        $this->prometheusService->registerJobStart($jobBody['displayName']);
     }
 }

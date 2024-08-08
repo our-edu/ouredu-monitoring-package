@@ -18,11 +18,11 @@ class JobFailedListener
     public function handle(JobFailed $event)
     {
         $jobBody = json_decode($event->job->getRawBody(), true);
-        $jobStarted = Redis::Get("job:started:" . $jobBody["uuid"]);
+        $jobStarted = Redis::Get('job:started:'.$jobBody['uuid']);
         $jobDelay = (microtime(true) - $jobStarted) * 1000;
-        $jobName = $jobBody["displayName"];
-        $this->prometheusService->registerJobFailure($jobBody["displayName"]);
+        $jobName = $jobBody['displayName'];
+        $this->prometheusService->registerJobFailure($jobBody['displayName']);
         $this->prometheusService->registerJobLatency($jobName, $jobDelay);
-        Redis::del("job:started:" . $jobBody["uuid"]);
+        Redis::del('job:started:'.$jobBody['uuid']);
     }
 }
