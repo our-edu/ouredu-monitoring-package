@@ -4,8 +4,8 @@ namespace OurEdu\OureduMonitoringPackage\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use OurEdu\OureduMonitoringPackage\Services\PrometheusService;
 use Illuminate\Support\Facades\Route;
+use OurEdu\OureduMonitoringPackage\Services\PrometheusService;
 
 class MonitoringMiddleware
 {
@@ -25,17 +25,17 @@ class MonitoringMiddleware
     {
         $route = Route::getRoutes()->match($request);
 
-        if (!$route) {
+        if (! $route) {
             return $request->path(); // Fallback to the raw path if no route is matched
         }
 
         $path = $route->uri();
 
         foreach ($route->parameters() as $key => $value) {
-            $path = str_replace($value, ":" . $key, $path);
+            $path = str_replace($value, ':'.$key, $path);
         }
 
-        return "/" . $path;
+        return '/'.$path;
     }
 
     /**
@@ -53,7 +53,7 @@ class MonitoringMiddleware
         $method = $request->method();
 
         // Normalize the path
-        $path = "/" . trim($path, "/");
+        $path = '/'.trim($path, '/');
 
         $method = $request->method();
 
